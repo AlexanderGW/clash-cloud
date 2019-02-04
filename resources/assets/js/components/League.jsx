@@ -1,7 +1,16 @@
 import React from "react";
 
 export default class League extends React.Component {
-	getNameFromRange(count){
+	getNameFromRange(count, size){
+		//size *= 2;
+		if(size <= 36) {
+			size = 36;
+		} else if(size <= 72) {
+			size = 72;
+		} else {
+			size = 288;
+		}
+
 		var name;
 		if( count > 4999 )
 			name = 'R2zmhyqQ0_lKcDR5EyghXCxgyC9mm_mVMIjAbmGoZtw';
@@ -49,15 +58,17 @@ export default class League extends React.Component {
 			name = 'uUJDLEdAh7Lwf6YOHmXfNM586ZlEvMju54bTlt2u6EE';
 		else
 			name = 'e--YMyIexEQQhE4imLoJcwhYn6Uy8KqlgyY3_kFV6t4';
-		return 'https://clash.cloud/asset/image/league/' + name + '/72.png';
+		return 'https://clash.cloud/asset/image/league/' + name + '/' + size + '.png';
 	}
 
 	render(){
 		var count = this.props.trophies;
+
+		// Set 0 if not in league
 		if(this.props.state == 0)
 			count = 0;
 		return(
-				<div><img src={this.getNameFromRange(count)}/></div>
+				<div><img width={this.props.size} src={this.getNameFromRange(count, this.props.size)}/></div>
 		);
 	}
 }

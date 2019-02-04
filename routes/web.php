@@ -28,13 +28,20 @@ Route::get('/populate',function(){
     $location->name = 'United Kingdom';
     $location->save();
 
-    $clan = new \App\Clan;
-    $clan->state = 0;
-    $clan->tag = 'A123';//$faker->randomAscii(8);
-    $clan->name = $faker->words(3, true);
-    $clan ->save();
+	$clan = new \App\Clan;
+	$clan->state = 0;
+	$clan->tag = 'A123';//$faker->randomAscii(8);
+	$clan->name = $faker->words(3, true);
+	$clan ->save();
+
+	$clan2 = new \App\Clan;
+	$clan2->state = 0;
+	$clan2->tag = 'B123';//$faker->randomAscii(8);
+	$clan2->name = $faker->words(3, true);
+	$clan2 ->save();
 
     $cs1 = new \App\ClanSnapshot;
+    $cs1->clan_id = mt_rand( 1, 2 );
     $cs1->badge_id = $badge->id;
     $cs1->location_id = $location->id;
     //$cs1->war_frequency = 'A';
@@ -48,15 +55,16 @@ Route::get('/populate',function(){
     $clan->snapshots()->save($cs1);
 
     $lsc = new \App\LocationSnapshotClan;
-    $lsc->clan_id = $clan->id;
+	$lsc->clan_id = mt_rand( 1, 2 );
     $lsc->location_id = 1;
     $lsc->rank = 2;
     $lsc->previous_rank = 3;
-    $cs1->created_at = date( 'Y-m-d H:i:s', time() - 86400 );
-    $cs1->updated_at = date( 'Y-m-d H:i:s', time() - 86400 );
+	$lsc->created_at = date( 'Y-m-d H:i:s', time() - 86400 );
+	$lsc->updated_at = date( 'Y-m-d H:i:s', time() - 86400 );
     $lsc->save();
 
     $cs2 = new \App\ClanSnapshot;
+	$cs2->clan_id = mt_rand( 1, 2 );
     $cs2->badge_id = $badge->id;
     $cs2->location_id = $location->id;
     //$cs2->war_frequency = 'A';
@@ -68,12 +76,13 @@ Route::get('/populate',function(){
     $clan->snapshots()->save($cs2);
 
     $lsc = new \App\LocationSnapshotClan;
-    $lsc->clan_id = $clan->id;
+	$lsc->clan_id = mt_rand( 1, 2 );
     $lsc->location_id = 1;
     $lsc->rank = 4;
     $lsc->previous_rank = 5;
     $lsc->save();
 
+    $j = 1;
     for( $i = 0; $i <= 40; $i++ ) {
         $player = new \App\Player;
         //$player->clan_id = $clan->id;
@@ -96,12 +105,13 @@ Route::get('/populate',function(){
             $lsp = new \App\LocationSnapshotPlayer;
             $lsp->player_id = $player->id;
             $lsp->location_id = 1;
-            $lsp->rank = 10;
+            $lsp->rank = $j;
             $lsp->trophies = $trophies;
             $lsp->previous_rank = 11;
             $lsp->created_at = date( 'Y-m-d H:i:s', time() - 86400 );
             $lsp->updated_at = date( 'Y-m-d H:i:s', time() - 86400 );
             $lsp->save();
+            $j++;
         }
 
         $trophies = mt_rand(0,6200);

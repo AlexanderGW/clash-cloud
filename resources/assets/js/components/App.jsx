@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Link } from 'react-router-dom';
 import Header from "./Header.jsx";
 import ClanProfile from "./ClanProfile.jsx";
 import PlayerProfile from "./PlayerProfile.jsx";
+import ClanList from "./ClanList.jsx";
+import PlayerList from "./PlayerList.jsx";
 
 const Main = (props) => (
     <main {...props}/>
@@ -36,6 +38,8 @@ export default class App extends React.Component {
         if(loading){
             return null;
         }
+        var date = new Date();
+        var stamp = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
         return(
             <BrowserRouter>
                 <Main>
@@ -45,6 +49,10 @@ export default class App extends React.Component {
                             <h1>Welcome to Clash Cloud!</h1>
                             <Link to="./clan/A123">Clan</Link><br/>
                             <Link to="./clan/A123/2017-05-17">Clan with date</Link>
+                            <h3>Top 20 clans</h3>
+                            <ClanList key={stamp} date={stamp}/>
+                            <h3>Top 20 players</h3>
+                            <PlayerList key={stamp} date={stamp}/>
                         </div>
                     )}/>
                     <Route path="/clan/:tag/:date" exact={true} render={({match}) => (

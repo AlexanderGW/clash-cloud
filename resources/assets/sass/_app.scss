@@ -1,3 +1,48 @@
+$dark: #222;
+$white: #fff;
+
+$font-sans: 'Roboto Condensed', sans-serif;
+
+%root {
+  font-size: 12pt;
+  font-family: $font-sans;
+}
+
+body {
+  @extend %root;
+  margin: 0;
+  padding: 6em 0 0;
+}
+
+a {
+  color: inherit;
+}
+
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: $dark;
+  height: 4.5em;
+  line-height: 4.5em;
+  color: $white;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #loader {
   position: absolute;
   top: 0;
@@ -28,8 +73,8 @@
   border-radius: 5px;
   background-color: green;
   padding: 0 5px 0;
+  margin-left: 5px;
   color: #fff;
-  margin: 0 0 0 10px;
 }
 
 .chng:before {
@@ -58,6 +103,7 @@
   background-color: #222;
   border-radius: 5px;
   padding: 0 5px;
+  margin-left: 5px;
   color: #fff;
   font-weight: 700;
   font-size: .7em;
@@ -76,3 +122,42 @@
 .rl.l {
   background-color: red;
 }
+
+
+
+
+.row > div {
+  padding: 15px;
+}
+
+/*.row:nth-child(odd) {
+  background-color: rgba( 255, 255, 255, .7 );
+}
+
+.row:nth-child(even) {
+  background-color: rgba( 238, 238, 238, .7 );
+}
+
+
+
+.row:nth-child(odd) > div:nth-child(odd).red {
+  background-color: rgba( 255, 204, 204, .7 );
+}
+
+.row:nth-child(odd) > div:nth-child(even).red {
+  background-color: rgba( 255, 204, 204, .7 );
+}
+
+
+.row:nth-child(odd) > div:nth-child(odd).green {
+  background-color: rgba( 204, 255, 204, .7 );
+}
+
+.row:nth-child(odd) > div:nth-child(even).green {
+  background-color: rgba( 204, 255, 204, .7 );
+}*/
+
+/*.row:nth-child(odd) {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}*/

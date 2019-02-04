@@ -12,7 +12,7 @@ class TopController extends Controller
 	 * @return void
 	 */
 	public function __construct() {
-		$this->middleware('cors');
+		//$this->middleware('cors');
 	}
 
 	/**

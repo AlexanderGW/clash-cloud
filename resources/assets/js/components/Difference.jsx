@@ -9,7 +9,8 @@ export default class Difference extends React.Component {
 	}
 
 	render(){
-		if((this.props.a == null || this.props.b == null) || this.props.a == this.props.b)
+		if((this.props.vary == false && this.props.a < this.props.b) || (this.props.a == null || this.props.b == null) || this.props.a == this.props.b)
+		if((this.props.vary == false && this.props.a < this.props.b) || (this.props.a == null || this.props.b == null) || this.props.a == this.props.b)
 			return null;
 
 		return(

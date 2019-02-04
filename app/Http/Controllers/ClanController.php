@@ -12,7 +12,7 @@ class ClanController extends Controller
 	 * @return void
 	 */
 	public function __construct() {
-		$this->middleware('cors');
+		//$this->middleware('cors');
 	}
 
 	/**
@@ -27,35 +27,34 @@ class ClanController extends Controller
 			abort(404);
 		}
 
+		$return = [
+			'clan' => $clan
+		];
+
+
 		// Get most recent snapshot for the day
-		$current = $clan->getSnapshotOn($request->date);
-		if(!$current) {
-			abort(404);
-		}
+		$current = $clan->getSnapshotBefore($request->date);
 
 		// Get the snapshot before "current"
-		$previous = $clan->getSnapshotBefore($current->updated_at->format('Y-m-d H:i:s'));
-
-		$return = [
-			'clan' => $clan,
-			'csc' => $current,
-			'csp' => ( $previous ?: null ),
+		if ($current) {
+			$return['csc'] = $current;
 
 			// Current members
-			'csmc' => $current->members()->with(['player', 'ranking' => function($query) use($current){
+			$return['csmc'] = $current->members()->with(['player', 'ranking' => function($query) use($current){
 				return $query->whereBetween('updated_at', [
-						$current->updated_at->format('Y-m-d'), $current->updated_at->addDay()->format('Y-m-d')
+					$current->updated_at->format('Y-m-d'), $current->updated_at->addDay()->format('Y-m-d')
 				])->orderBy('updated_at', 'desc');
-			}])->orderBy('trophies','desc')->get(),
+			}])->orderBy('trophies','desc')->get();
 
 			// Previous members
-			'csmp' => ( $previous ? $previous->members()->with(['player', 'ranking' => function($query) use($previous){
+			$previous = $clan->getSnapshotBefore($current->updated_at->format('Y-m-d H:i:s'));
+			$return['csmp'] = ( $previous ? $previous->members()->with(['player', 'ranking' => function($query) use($previous){
 				return $query->where([
 					['updated_at', '>=', $previous->updated_at->format('Y-m-d')],
 					['updated_at', '<', $previous->updated_at->addDay()->format('Y-m-d')]
 				])->orderBy('updated_at', 'desc');
-			}])->orderBy('trophies','desc')->get()->keyBy('player_id') : null )
-		];
+			}])->orderBy('trophies','desc')->get()->keyBy('player_id') : null );
+		}
 
 		//dd($return);exit;
 

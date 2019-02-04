@@ -12,11 +12,11 @@ class PlayerController extends Controller
 	 * @return void
 	 */
 	public function __construct() {
-		$this->middleware('cors');
+		//$this->middleware('cors');
 	}
 
 	/**
-	 * Show the application dashboard.
+	 * Player overview.
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
@@ -26,12 +26,9 @@ class PlayerController extends Controller
 			abort(404);
 		}
 
-		$date = $request->date;
-		if(is_null($date)) {
-			$date = date('Y-m-d H:i:s');
-		}
-
-		$membership = $player->memberships()->with(['snapshot', 'ranking'])
+		$membership = $player->memberships()->with(['snapshot' => function($query) {
+			return $query->orderBy('updated_at', 'desc')->first();
+		}, 'ranking'])
 		->orderBy('clan_members.id', 'desc')->first();
 
 		$rank = $player->rankings()->with(['snapshot', 'location'])
@@ -50,7 +47,41 @@ class PlayerController extends Controller
 		];
 
 		return response()->json($return);
+		//return view('player', $return);
+	}
 
-		return view('player', $return);
+	/**
+	 * Player history feed.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function history(Request $request) {
+		$player = \App\Player::where('tag', $request->tag)->first();
+		if( !$player ) {
+			abort(404);
+		}
+
+		$memberships = $player->memberships()->orderBy('id', 'desc');
+
+		/*$clans = \App\ClanSnapshot::select('clans.tag', 'clans.name', 'clan_snapshots.updated_at')
+        ->join('clans', 'clans.id', '=', 'clan_snapshots.clan_id')
+        ->whereIn('clan_snapshots.id', $memberships->pluck('clan_snapshot_id'))
+        ->distinct()->get()->toArray();*/
+
+		$clans = \App\ClanSnapshot::with(['clan', 'badge'])
+		->whereIn('id', $memberships->pluck('clan_snapshot_id'))
+		->distinct()->get()->toArray();
+
+		foreach ($clans as $key => $val) {
+			$clans[$key]['type'] = 'C';
+		}
+
+		var_dump($clans);exit;
+
+		$return = [
+			$clans
+		];
+
+		return response()->json($return);
 	}
 }

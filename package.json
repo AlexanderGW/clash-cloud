@@ -22,18 +22,18 @@
     "webpack": "^2.7.0"
   },
   "name": "clash-cloud",
-  "description": "<p align=\"center\"><img src=\"https://laravel.com/assets/img/components/logo-laravel.svg\"></p>",
-  "version": "1.0.0",
+  "description": "Statistics aggregate for Clash of Clans",
+  "version": "2.0.0",
   "main": "webpack.mix.js",
   "directories": {
     "test": "tests"
   },
-  "author": "",
+  "author": "Alexander Gailey-White",
   "license": "ISC",
   "dependencies": {
     "node-sass": "^4.11.0",
-    "react": "^15.6.2",
-    "react-dom": "^15.6.2",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "react-router-dom": "^4.3.1"
   }
 }
